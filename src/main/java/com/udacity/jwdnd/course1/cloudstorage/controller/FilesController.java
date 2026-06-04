@@ -28,6 +28,8 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 import com.udacity.jwdnd.course1.cloudstorage.exceptions.DuplicatedFileException;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.TransferService;
+import com.udacity.jwdnd.course1.cloudstorage.model.Transfer;
 @Controller
 @ControllerAdvice
 public class FilesController  {
@@ -35,6 +37,8 @@ public class FilesController  {
 	FileService fileService;
 	@Autowired
 	UserService userService;
+	@Autowired
+    TransferService transferService;
 
 	 
 	@PostMapping("/files")
@@ -67,6 +71,19 @@ public class FilesController  {
 			
 			// add file to database
 			fileService.addFile(file);
+
+			Transfer transfer = new Transfer();
+
+transfer.setUploadedBy(user.getUserId().longValue());
+transfer.setFileName(fileUpload.getOriginalFilename());
+transfer.setFileType(fileUpload.getContentType());
+transfer.setFileSize(fileUpload.getSize());
+
+transfer.setStatus("UPLOADED");
+transfer.setS3Key("LOCAL_STORAGE");
+transfer.setValidationMessage("File uploaded successfully");
+
+transferService.createTransfer(transfer);
 
 			// success
 			redirectAttributes.addFlashAttribute("successEvent", "File successfully uploaded!");

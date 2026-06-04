@@ -34,3 +34,19 @@ CREATE TABLE IF NOT EXISTS CREDENTIALS (
     userid INT,
     foreign key (userid) references USERS(userid)
 );
+
+CREATE TABLE IF NOT EXISTS TRANSFERS (
+    transfer_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    partner_id BIGINT,
+    uploaded_by BIGINT,
+
+    file_name VARCHAR(255),
+    file_type VARCHAR(100),
+    file_size BIGINT,
+
+    status VARCHAR(50),
+    s3_key VARCHAR(500),
+
+    upload_time VARCHAR(100),
+    validation_message VARCHAR(1000)
+);

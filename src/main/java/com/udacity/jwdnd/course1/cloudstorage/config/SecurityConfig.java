@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	// allow user to go to the pages/folders listed below
         http.authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**").permitAll()
+                .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
 
         // allow user to go to the login page and use custom page
@@ -47,6 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // log out form
         http.logout()
 		.permitAll();
+
+        
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
+
+
         
     }
     
